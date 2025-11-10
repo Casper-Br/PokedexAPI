@@ -1,13 +1,15 @@
 const API_URL = "https://pokeapi.co/api/v2/pokemon";
 const API_URL_TYPES = "https://pokeapi.co/api/v2/type/"
 const root = document.getElementById("root");
-const form = document.getElementById("pokedexSearch");
+const formName = document.getElementById("pokedexSearch");
+const formType = document.getElementById("pokemonTypeForm");
 const typeSelect = document.getElementById("pokemonType");
+const pokemonByType = document.getElementById("pokemonByType");
 
 window.onload = (event) => {
     fetch(API_URL_TYPES)
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
             data.results.forEach(type => {
                 const option = document.createElement("option");
                 option.value = type.name;
@@ -18,10 +20,9 @@ window.onload = (event) => {
         .catch(error => console.error("Error fetcing types:", error));
 };
 
-form.addEventListener("submit", (event) => {
+formName.addEventListener("submit", (event) => {
     event.preventDefault();
 
-event.preventDefault();
     const pokemonName = document.getElementById("pokemonName").value;
     fetch(`${API_URL}/${pokemonName}`)
       .then((response) => response.json())
@@ -42,6 +43,30 @@ event.preventDefault();
         root.insertBefore(div, root.firstChild);
     });
 });
+
+formType.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    pokemonByType.innerHTML = "";
+
+    const selectedType = typeSelect.value
+    if (!selectedType) return;
+
+    fetch(`${API_URL_TYPES}${selectedType}`)
+        .then(response => response.json())
+        .then(data => {
+            const ul = document.createElement("ul");
+            ul.style.listStyle = "none";
+            data.pokemon.forEach(p => {
+                const li = document.createElement("li");
+                li.textContent = p.pokemon.name;
+                ul.appendChild(li);
+            });
+            pokemonByType.appendChild(ul);
+        })
+        .catch(err => console.error("Error fetching Pokemon by type", err));
+});
+
 // Fetch all Pokémon types from the PokéAPI
 // fetch("https://pokeapi.co/api/v2/type/")
  // .then(response => response.json())

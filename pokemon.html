@@ -7,12 +7,16 @@
     <body>
         <form id="pokedexSearch">
             <input type="text" id="pokemonName" />
-            <select id="pokemonType">
-                <option value="">Select a type</option>
-            </select>
             <button type="submit">Add Pokemon</button>
         </form>
+        <form id="pokemonTypeForm">
+            <select id="pokemonType">
+                <option id="pokemonTypeOption" value="">Select a type</option>
+            </select>
+            <button type="submit">Search by type</button>
+        </form>
         <div id="root"></div>
+        <div id="pokemonByType"></div>
         <script src="pokedex.js"></script>
     </body>
 </html>
