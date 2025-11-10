@@ -1,10 +1,37 @@
-// Fetch all Pokémon types from the PokéAPI
-fetch("https://pokeapi.co/api/v2/type/")
-  .then(response => response.json()) // Parse the JSON data
-  .then(data => {
-    // 'data.results' is an array of type objects
-    data.results.forEach(type => {
-      console.log(type.name);
+const API_URL = "https://pokeapi.co/api/v2/pokemon";
+const root = document.getElementById("root");
+const form = document.getElementById("pokedexSearch");
+
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+event.preventDefault();
+    const pokemonName = document.getElementById("pokemonName").value;
+    fetch(`${API_URL}/${pokemonName}`)
+      .then((response) => response.json())
+      .then((newPokemon) => {
+        // create elements for the Pokemon
+        const div = document.createElement("div");
+        const name = document.createElement("h1");
+        const image = document.createElement("img");
+        const type = document.createElement("h2");
+        
+        image.src = newPokemon.sprites.other.dream_world.front_default;
+        name.textContent = newPokemon.name;
+        type.textContent = newPokemon.types.map(t => t.type.name).join(", ");
+
+        div.appendChild(name);
+        div.appendChild(image);
+        div.appendChild(type);
+        root.insertBefore(div, root.firstChild);
     });
-  })
-  .catch(error => console.error("Error fetching data:", error));
+});
+// Fetch all Pokémon types from the PokéAPI
+// fetch("https://pokeapi.co/api/v2/type/")
+ // .then(response => response.json())
+ // .then(data => {
+ //   data.results.forEach(type => {
+  //    console.log(type.name);
+  //  });
+ // })
+//  .catch(error => console.error("Error fetching data:", error));
