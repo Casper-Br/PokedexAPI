@@ -1,6 +1,22 @@
 const API_URL = "https://pokeapi.co/api/v2/pokemon";
+const API_URL_TYPES = "https://pokeapi.co/api/v2/type/"
 const root = document.getElementById("root");
 const form = document.getElementById("pokedexSearch");
+const typeSelect = document.getElementById("pokemonType");
+
+window.onload = (event) => {
+    fetch(API_URL_TYPES)
+        .then(response => response.json())
+        .then(data => {
+            data.results.forEach(type => {
+                const option = document.createElement("option");
+                option.value = type.name;
+                option.textContent = type.name;
+                typeSelect.appendChild(option);
+            })
+        })
+        .catch(error => console.error("Error fetcing types:", error));
+};
 
 form.addEventListener("submit", (event) => {
     event.preventDefault();
